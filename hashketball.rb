@@ -1,3 +1,4 @@
+require 'pry'
 # Write your code below game_hash
 def game_hash
   {
@@ -127,3 +128,123 @@ def game_hash
 end
 
 # Write code here
+## following expect :home or :away as param
+def team_name(home_or_away) #string
+  game_hash[home_or_away][:team_name]
+end
+
+def players(home_or_away) #array
+  game_hash[home_or_away][:players]
+end
+
+def colors(home_or_away) #array
+  game_hash[home_or_away][:colors]
+end
+
+def num_points_scored(player_input)
+  game_hash.values.each {|team|
+    team[:players].each {|player|
+      if player[:player_name] == player_input
+        return player[:points]
+      end
+    }
+  }
+end
+num_points_scored("Reggie Evans")
+
+def shoe_size(name_to_search)
+  game_hash.values.each do |team|
+    team[:players].each do |player|
+      if player[:player_name] == name_to_search
+      return player[:shoe]
+      end
+    end
+  end
+end
+
+def team_colors(team_name_input)
+  game_hash.values.each do |team|
+    if team[:team_name] == team_name_input
+      return team[:colors]
+    end
+  end
+end
+
+def team_names
+  # names = []
+  # game_hash.values.each do |team|
+  #   names << team[:team_name]
+  # end
+  # return names
+
+  game_hash.values.map do |team|
+    team[:team_name]
+  end
+
+end
+team_names
+
+def player_numbers(team_to_search)
+  # jerseys = []
+  # game_hash.values.each do |team|
+  #   if team[:team_name] == team_to_search
+  #     team[:players].each do |player|
+  #       jerseys << player[:number]
+  #     end
+  #   end
+  # end
+  # return jerseys
+
+  game_hash.values.each do |team|
+    if team[:team_name] == team_to_search
+      return team[:players].map { |player| player[:number] }
+    end
+  end
+
+end
+
+def player_stats(name_to_search)
+  game_hash.values.each do |team|
+    team[:players].each do |player|
+      if player[:player_name] == name_to_search
+        return player
+      end
+    end
+  end
+end
+
+def big_shoe_rebounds
+  # my first attack was to push all the player hashes into a new single layer array, 
+  # sort in place, then get the largest shoe - see below for a nicer example
+  # all_players=[]
+  # game_hash.values.each do |team|
+  #   team[:players].each do |player|
+  #     all_players << player
+  #   end
+  # end
+  # all_players.sort_by! { |player| player[:shoe] }
+  # # binding.pry
+  # return all_players[-1][:rebounds]
+
+
+  #adam larosa's version which is cooler and more expandable
+  the_brain = {shoe_size: 0}
+
+  game_hash.values.each do |team|
+    team[:players].each do |player|
+      if player[:shoe] > the_brain[:shoe_size]
+        the_brain[:shoe_size] = player[:shoe]
+        the_brain[:player] = player
+      end
+    end
+  end
+  the_brain[:player][:rebounds]
+
+end
+big_shoe_rebounds
+
+# player_numbers("Brooklyn Nets")
+# binding.pry
+  
+# binding.pry
+0
